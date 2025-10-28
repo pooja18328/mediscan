@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediScan - Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="form-container">
+    <h2>Login to MediScan</h2>
+    <form id="loginForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit" class="btn-primary">Login</button>
+      <p id="message"></p>
+    </form>
+    <p class="form-footer">New user? <a href="register.html">Create an account</a></p>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const data = {
+        email: document.getElementById("email").value,
+        password_hash: document.getElementById("password").value
+      };
+
+      const res = await fetch("http://localhost:8089/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      const msg = await res.text();
+      document.getElementById("message").innerText = msg;
+
+      if (msg.includes("Login successful")) {
+        window.location.href = "appointment.html";
+      }
+    });
+  </script>
+</body>
+</html>
